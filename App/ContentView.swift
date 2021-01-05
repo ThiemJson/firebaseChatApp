@@ -22,9 +22,10 @@ struct ContentView_Previews: PreviewProvider {
 
 struct FirstPage : View {
     @State private var no = ""
+    @State private var ccode = ""
     var body: some View {
         VStack(spacing: 20){
-            Image("pic")
+            //            Image("pic")
             Text ("Verify Your Phone Number")
                 .font(.largeTitle)
                 .fontWeight(.heavy)
@@ -32,9 +33,20 @@ struct FirstPage : View {
                 .font(.body)
                 .foregroundColor(.gray)
                 .padding(.top, 12)
-            TextField("Number", text: $no)
-                .padding()
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+            HStack{
+                TextField("+1", text: $ccode)
+                    .padding()
+                    .frame(width: UIScreen.main.bounds.width * 0.2)
+                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                    .background(Color("Color"))
+                    .keyboardType(UIKeyboardType.numberPad)
+                
+                TextField("Number", text: $no)
+                    .padding()
+                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                    .background(Color("Color"))
+                    .keyboardType(UIKeyboardType.numberPad)
+            }
             
             Button(action : {
                 
@@ -43,6 +55,7 @@ struct FirstPage : View {
                     .frame(width: UIScreen.main.bounds.width - 30, height: 50)
                     .foregroundColor(.white)
                     .background(Color.orange)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
                 
             }
         }
