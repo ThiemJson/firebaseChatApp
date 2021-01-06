@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 import Firebase
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
