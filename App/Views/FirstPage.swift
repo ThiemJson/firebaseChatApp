@@ -18,7 +18,6 @@ struct FirstPage : View {
    @State private var ID = ""
    
    var body: some View {
-       print("==> child View on appear")
        return VStack(spacing: 20){
            Text ("Verify Your Phone Number")
                .font(.largeTitle)
@@ -44,15 +43,13 @@ struct FirstPage : View {
            NavigationLink(destination: SecondPage(show: $show, ID: $ID), isActive: $show){
                Button(action : {
                    Auth.auth().settings?.isAppVerificationDisabledForTesting = true
-                   PhoneAuthProvider.provider().verifyPhoneNumber("+"+self.ccode+self.no, uiDelegate: nil){
+                PhoneAuthProvider.provider().verifyPhoneNumber("+"+self.ccode+self.no, uiDelegate: nil){
                        (ID, err) in
                        if err != nil {
                            self.msg = (err?.localizedDescription)!
                            self.alert.toggle()
                            return
                        }
-                       
-                       print("==> \(String(describing: ID))")
                        self.ID = ID!
                        self.show.toggle()
                    }
