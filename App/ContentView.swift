@@ -1,21 +1,21 @@
-//
-//  ContentView.swift
-//  App
-//
-//  Created by Teneocto on 1/4/21.
-//  Copyright © 2021 NguyenCaoThiem. All rights reserved.
-//
-
-import SwiftUI
-import Firebase
-import FirebaseFirestore
-import FirebaseStorage
-
-struct ContentView: View {
+ //
+ //  ContentView.swift
+ //  App
+ //
+ //  Created by Teneocto on 1/4/21.
+ //  Copyright © 2021 NguyenCaoThiem. All rights reserved.
+ //
+ 
+ import SwiftUI
+ import Firebase
+ import FirebaseAuth
+ import FirebaseFirestore
+ import FirebaseStorage
+ 
+ struct ContentView: View {
     @State var status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
     var body: some View {
-        print("==> Render main View")
-        return NavigationView{
+        NavigationView{
             VStack{
                 if status {
                     Home()
@@ -34,9 +34,9 @@ struct ContentView: View {
             
         }
     }
-}
-
-struct FirstPage : View {
+ }
+ 
+ struct FirstPage : View {
     @State private var no = ""
     @State private var ccode = ""
     @State private var show = false
@@ -102,9 +102,9 @@ struct FirstPage : View {
             Alert(title: Text("Error"), message: Text(self.msg), dismissButton: .default(Text("OK")))
         }
     }
-}
-
-struct SecondPage : View {
+ }
+ 
+ struct SecondPage : View {
     @State private var code = ""
     @Binding var show : Bool
     @Binding var ID : String
@@ -197,10 +197,10 @@ struct SecondPage : View {
             AccountCreation(show: self.$creation)
         }
     }
-}
-
-
-struct Home : View {
+ }
+ 
+ 
+ struct Home : View {
     var body : some View {
         VStack{
             Text("Welcome \(UserDefaults.standard.value(forKey: "userName") as! String)")
@@ -213,9 +213,9 @@ struct Home : View {
             }
         }
     }
-}
-
-func checkUser(completion: @escaping (Bool ,String)->Void){
+ }
+ 
+ func checkUser(completion: @escaping (Bool ,String)->Void){
     let db = Firestore.firestore()
     db.collection("user").getDocuments{
         (snap ,err) in
@@ -234,16 +234,89 @@ func checkUser(completion: @escaping (Bool ,String)->Void){
         
         completion(false,"")
     }
-}
-
-struct AccountCreation : View {
+ }
+ 
+ struct AccountCreation : View {
     @Binding var show : Bool
+    @State private var name = ""
+    @State private var about = ""
+    @State private var loading = false
+    @State private var picker = false
+    @State private var imageData : Data = .init(count: 0)
+    @State private var alert = false
+    
     var body : some View {
-        Text("Creation")
+        VStack(alignment: .leading, spacing: 15) {
+            Text("Awesome !! Create an Account")
+                .font(.title)
+            
+            HStack{
+                Spacer()
+                Button(action: {
+                    // TODO
+                }){
+                    Image(systemName: "person.crop.circle.badge.plus")
+                        .resizable()
+                        .frame(width: 90, height: 70)
+                        .foregroundColor(Color.gray)
+                }
+                Spacer()
+            }.padding(.vertical, 12)
+            
+            Text("Enter user name")
+                .font(.body)
+                .foregroundColor(.gray)
+                .padding(.top, 12)
+            TextField("Name", text: self.$name)
+                .padding()
+                .clipShape(RoundedRectangle(cornerRadius: 60))
+                .background(Color("Color"))
+                .keyboardType(UIKeyboardType.numberPad)
+            
+            Text("About you")
+                .font(.body)
+                .foregroundColor(.gray)
+                .padding(.top, 12)
+            TextField("About", text: self.$about)
+                .padding()
+                .clipShape(RoundedRectangle(cornerRadius: 60))
+                .background(Color("Color"))
+                .keyboardType(UIKeyboardType.numberPad)
+            
+            if self.loading {
+                HStack{
+                    Spacer()
+                    Indicator()
+                    Spacer()
+                }
+            }
+            else {
+                Button(action: {
+                    self.loading.toggle()
+                    if self.name != "" && self.about != "" && self.imageData.count != 0 {
+                        CreateUser(name: self.name,  about: self.about, imageData: self.imageData)
+                    }
+                    
+                    else {
+                        self.alert.toggle()
+                    }
+                }){
+                    Text("Verify")
+                        .frame(width: UIScreen.main.bounds.width - 30, height: 50)
+                }
+                .foregroundColor(.white)
+                .background(Color.orange)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+            }
+        }
+        .padding()
+        .alert(item: self.$alert){
+            Alert(
+        }
     }
-}
-
-struct Indicator : UIViewRepresentable {
+ }
+ 
+ struct Indicator : UIViewRepresentable {
     func makeUIView(context: UIViewRepresentableContext<Indicator>) -> UIActivityIndicatorView {
         let indicator = UIActivityIndicatorView(style: .large)
         indicator.startAnimating()
@@ -253,4 +326,8 @@ struct Indicator : UIViewRepresentable {
     func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<Indicator>) {
         // TODO
     }
-}
+ }
+ 
+ func CreateUser(name: String, about: String, imageData : Data ){
+    // TODO
+ }
