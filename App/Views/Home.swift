@@ -7,15 +7,19 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
-struct Home: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        Home()
-    }
+struct Home : View {
+   var body : some View {
+       VStack{
+           Text("Welcome \(UserDefaults.standard.value(forKey: "userName") as! String)")
+           Button(action: {
+               try! Auth.auth().signOut()
+               UserDefaults.standard.set(false, forKey: "status")
+               NotificationCenter.default.post(name: Notification.Name("statusChange"), object: nil)
+           }){
+               Text("Logout")
+           }
+       }
+   }
 }

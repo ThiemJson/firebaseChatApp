@@ -14,6 +14,14 @@
 		6365144525A2C6B100D003F6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6365144425A2C6B100D003F6 /* Preview Assets.xcassets */; };
 		6365144825A2C6B100D003F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6365144625A2C6B100D003F6 /* LaunchScreen.storyboard */; };
 		6365145025A2C75B00D003F6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6365144F25A2C75B00D003F6 /* GoogleService-Info.plist */; };
+		63727F9625A6E21800039CFE /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63727F9525A6E21800039CFE /* ImagePicker.swift */; };
+		63727F9825A6E26400039CFE /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63727F9725A6E26400039CFE /* Indicator.swift */; };
+		63727F9A25A6E2A000039CFE /* AccountCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63727F9925A6E2A000039CFE /* AccountCreation.swift */; };
+		63727F9C25A6E2D500039CFE /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63727F9B25A6E2D500039CFE /* Home.swift */; };
+		63727F9E25A6E31000039CFE /* SecondPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63727F9D25A6E30F00039CFE /* SecondPage.swift */; };
+		63727FA025A6E33400039CFE /* FirstPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63727F9F25A6E33400039CFE /* FirstPage.swift */; };
+		63727FA225A6E3A300039CFE /* CheckUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63727FA125A6E3A300039CFE /* CheckUser.swift */; };
+		63727FA425A6E3E000039CFE /* CreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63727FA325A6E3E000039CFE /* CreateUser.swift */; };
 		A6ADA835EBF507B072C235FB /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417402056FE88D4B89B9B228 /* Pods_App.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +36,14 @@
 		6365144725A2C6B100D003F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6365144925A2C6B100D003F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6365144F25A2C75B00D003F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		63727F9525A6E21800039CFE /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		63727F9725A6E26400039CFE /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
+		63727F9925A6E2A000039CFE /* AccountCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCreation.swift; sourceTree = "<group>"; };
+		63727F9B25A6E2D500039CFE /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		63727F9D25A6E30F00039CFE /* SecondPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondPage.swift; sourceTree = "<group>"; };
+		63727F9F25A6E33400039CFE /* FirstPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstPage.swift; sourceTree = "<group>"; };
+		63727FA125A6E3A300039CFE /* CheckUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUser.swift; sourceTree = "<group>"; };
+		63727FA325A6E3E000039CFE /* CreateUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUser.swift; sourceTree = "<group>"; };
 		7B094EA690E8215952E14409 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		8DED0D1A4C60F9124E0C1B65 /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,6 +90,8 @@
 		6365143A25A2C6AE00D003F6 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				63727F9425A6E1F500039CFE /* Views */,
+				63727F9325A6E1EB00039CFE /* Model */,
 				6365144F25A2C75B00D003F6 /* GoogleService-Info.plist */,
 				6365143B25A2C6AE00D003F6 /* AppDelegate.swift */,
 				6365143D25A2C6AE00D003F6 /* SceneDelegate.swift */,
@@ -92,6 +110,28 @@
 				6365144425A2C6B100D003F6 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		63727F9325A6E1EB00039CFE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				63727FA125A6E3A300039CFE /* CheckUser.swift */,
+				63727FA325A6E3E000039CFE /* CreateUser.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		63727F9425A6E1F500039CFE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				63727F9525A6E21800039CFE /* ImagePicker.swift */,
+				63727F9725A6E26400039CFE /* Indicator.swift */,
+				63727F9925A6E2A000039CFE /* AccountCreation.swift */,
+				63727F9B25A6E2D500039CFE /* Home.swift */,
+				63727F9D25A6E30F00039CFE /* SecondPage.swift */,
+				63727F9F25A6E33400039CFE /* FirstPage.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		685BD83700FD582E27BF0BF2 /* Frameworks */ = {
@@ -219,8 +259,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				6365143C25A2C6AE00D003F6 /* AppDelegate.swift in Sources */,
+				63727F9625A6E21800039CFE /* ImagePicker.swift in Sources */,
+				63727F9A25A6E2A000039CFE /* AccountCreation.swift in Sources */,
 				6365143E25A2C6AE00D003F6 /* SceneDelegate.swift in Sources */,
+				63727F9E25A6E31000039CFE /* SecondPage.swift in Sources */,
+				63727FA025A6E33400039CFE /* FirstPage.swift in Sources */,
+				63727F9825A6E26400039CFE /* Indicator.swift in Sources */,
+				63727FA225A6E3A300039CFE /* CheckUser.swift in Sources */,
 				6365144025A2C6AE00D003F6 /* ContentView.swift in Sources */,
+				63727F9C25A6E2D500039CFE /* Home.swift in Sources */,
+				63727FA425A6E3E000039CFE /* CreateUser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

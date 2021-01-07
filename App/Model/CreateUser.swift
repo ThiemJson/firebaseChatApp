@@ -7,15 +7,43 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseAuth
+import FirebaseStorage
 
-struct CreateUser: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct CreateUser_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateUser()
-    }
+func CreateUser(name: String, about: String, imageData : Data , completion: @escaping (Bool) -> Void ){
+   let db = Firestore.firestore()
+   let storage = Storage.storage().reference()
+   let uid = Auth.auth().currentUser?.uid
+   
+   storage.child("profilepic").child(uid!).putData(imageData, metadata: nil){
+       (_,err) in
+       
+       if err != nil {
+           print((err?.localizedDescription)!)
+           return
+       }
+       
+       storage.child("profilepic").child(uid!).downloadURL{
+           (url, err) in
+           if err != nil {
+               print((err?.localizedDescription)!)
+               return
+           }
+           
+           db.collection("users").document(uid!).setData(["name":name, "about":about, "pic":"\(url!))","uid":uid!]){
+               (err) in
+               if err != nil {
+                   print((err?.localizedDescription)!)
+                   return
+               }
+               
+               completion(true)
+               
+               UserDefaults.standard.set(true, forKey: "status")
+               UserDefaults.standard.set(name, forKey: "userName")
+               NotificationCenter.default.post(name: Notification.Name("statusChange"), object: nil)
+           }
+       }
+   }
 }
