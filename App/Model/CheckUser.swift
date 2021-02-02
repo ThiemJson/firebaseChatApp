@@ -10,23 +10,23 @@ import SwiftUI
 import FirebaseFirestore
 import FirebaseAuth
 
-func checkUser(completion: @escaping  (Bool ,String)->Void){
+func checkUser(completion: @escaping  (Bool ,String, String, String)->Void){
     print("==> func checkout user")
     let db = Firestore.firestore()
     db.collection("users").getDocuments{
         (snap ,err) in
         
         if err != nil{
-            print(err?.localizedDescription ?? nil!)
+            print((err?.localizedDescription ?? nil)!)
             return
         }
         
         for i in snap!.documents {
             if i.documentID == Auth.auth().currentUser?.uid{
-                completion(true, i.get("name") as! String)
+                completion(true, i.get("name") as! String, i.documentID, i.get("pic") as! String)
                 return
             }
         }
-        completion(false,"")
+        completion(false,"","","")
     }
 }

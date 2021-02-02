@@ -56,11 +56,13 @@ struct SecondPage : View {
                                 }
                                 
                                 checkUser{
-                                    (exits, user) in
+                                    (exits, user, uid, pic) in
                                     print("==> func compleion user")
                                     if exits {
                                         UserDefaults.standard.set(true, forKey: "status")
                                         UserDefaults.standard.set(user, forKey: "userName")
+                                        UserDefaults.standard.set(uid, forKey: "UID")
+                                        UserDefaults.standard.set(pic, forKey: "pic")
                                         NotificationCenter.default.post(name: Notification.Name("statusChange"), object: nil)
                                     }
                                     else {
