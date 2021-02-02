@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 
@@ -24,7 +25,6 @@ struct ContentView: View {
                     FirstPage()
                 }
             }.onAppear{
-                print("==> main View on appear")
                 NotificationCenter.default.addObserver(forName: Notification.Name("statusChange"), object: nil, queue: .main){
                     (_) in
                     let status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
@@ -221,7 +221,7 @@ func checkUser(completion: @escaping (Bool ,String)->Void){
         (snap ,err) in
         
         if err != nil{
-            print(err?.localizedDescription ?? nil!)
+            print(err?.localizedDescription ?? "")
             return
         }
         
