@@ -15,22 +15,23 @@ import FirebaseStorage
 struct ContentView: View {
     @State var status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
     var body: some View {
-        VStack{
-            if status {
-                NavigationView{
+        NavigationView{
+            VStack{
+                if status {
                     Home().environmentObject(MainObservable())
                 }
-            }
-            else{
-                FirstPage()
-            }
-        }.onAppear{
-            NotificationCenter.default.addObserver(forName: Notification.Name("statusChange"), object: nil, queue: .main){
-                (_) in
-                let status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
-                self.status = status
+                else{
+                    FirstPage()
+                }
+            }.onAppear{
+                NotificationCenter.default.addObserver(forName: Notification.Name("statusChange"), object: nil, queue: .main){
+                    (_) in
+                    let status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
+                    self.status = status
+                }
             }
         }
+        
     }
 }
 
