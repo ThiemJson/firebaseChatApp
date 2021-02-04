@@ -37,6 +37,7 @@ struct ContentView: View {
 
 class MainObservable : ObservableObject {
     @Published var recents = [Recent]()
+    @Published var norecents = false
     
     init(){
         let db = Firestore.firestore()
@@ -45,7 +46,12 @@ class MainObservable : ObservableObject {
             (snap, err) in
             if err != nil {
                 print((err?.localizedDescription)!)
+                self.norecents = true
                 return
+            }
+            
+            if snap!.isEmpty {
+                self.norecents = true
             }
             
             for i in snap!.documentChanges {

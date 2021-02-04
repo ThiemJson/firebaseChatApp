@@ -21,24 +21,40 @@ struct Home : View {
     @State var pic = ""
     
     var body : some View {
-        VStack{
-            if self.datas.recents.count == 0 {
-                Indicator()
+        ZStack{
+            NavigationLink(
+                destination: ChatView(name: name, pic: pic, uid: uid, chat: $chat),
+                isActive: $chat){
+                Text("")
             }
-            else{
-                ScrollView(.vertical, showsIndicators: false){
-                    VStack(spacing: 12){
-                        ForEach(datas.recents){i in
-                            Button(action: {
-                                print("==> recent view click")
-                            }, label: {
-                                RecentCellView(url: i.pic, name: i.name, time: i.time, date: i.date, lastmsg: i.lastmsg)
-                            })
-                        }
-                    }.padding()
+            VStack{
+                if self.datas.recents.count == 0 {
+                    if self.datas.norecents{
+                        Text("No Chat History")
+                    }
+                    else{
+                        Indicator()
+                    }
+                }
+                else{
+                    ScrollView(.vertical, showsIndicators: false){
+                        VStack(spacing: 12){
+                            ForEach(datas.recents){i in
+                                Button(action: {
+                                    self.uid = i.id
+                                    self.name = i.name
+                                    self.pic = i.pic
+                                    self.chat.toggle()
+                                }, label: {
+                                    RecentCellView(url: i.pic, name: i.name, time: i.time, date: i.date, lastmsg: i.lastmsg)
+                                })
+                            }
+                        }.padding()
+                    }
                 }
             }
-        }.navigationBarTitle("Home", displayMode:.inline)
+        }
+        .navigationBarTitle("Home", displayMode:.inline)
         .navigationBarItems(leading:
                                 Button(action: {
                                     do {
@@ -66,7 +82,7 @@ struct Home : View {
                                 )
         )
         .sheet(isPresented: self.$show){
-            newChatView()
+            newChatView(name: $name, pic: $pic, uid: $uid, show: $show, chat: $chat)
         }
     }
 }
@@ -103,6 +119,12 @@ struct RecentCellView : View {
 
 struct newChatView : View {
     @ObservedObject var datas = getAllUsers()
+    @Binding var name : String
+    @Binding var pic : String
+    @Binding var uid : String
+    @Binding var show : Bool
+    @Binding var chat : Bool
+    
     var body: some View {
         VStack(alignment: .leading){
             if self.datas.users.count == 0 {
@@ -114,7 +136,11 @@ struct newChatView : View {
                     VStack(spacing: 12){
                         ForEach(datas.users){i in
                             Button(action: {
-                                print("==> new chat")
+                                self.uid = i.id
+                                self.name = i.name
+                                self.pic = i.pic
+                                self.chat.toggle()
+                                self.show.toggle()
                             }, label: {
                                 UserCellView(url: i.pic, name: i.name, about: i.about)
                             })
@@ -187,9 +213,99 @@ struct ChatView : View {
     var pic: String
     var uid: String
     @Binding var chat : Bool
+    @State var msgs = [Msg]()
+    @State var txt = ""
+    @State var nomsgs = false
+    
     var body: some View {
         VStack{
-            Text("Hello").navigationBarTitle(name, displayMode: .inline)
+            if self.msgs.count == 0 {
+                if self.nomsgs {
+                    Text("Start new conversation !!").foregroundColor(Color.black.opacity(0.5)).padding(.top)
+                    Spacer()
+                }
+                else {
+                    Spacer()
+                    Indicator()
+                    Spacer()
+                }
+            }
+            else{
+                ScrollView(.vertical, showsIndicators: false){
+                    ForEach(self.msgs){
+                        i in
+                        HStack{
+                            if i.user == UserDefaults.standard.value(forKey: "UID") as! String {
+                                Spacer()
+                                Text(i.msg).padding().foregroundColor(.white).background(Color.blue).clipShape(ChatBubble(mymsg: true))
+                            }else{
+                                Text(i.msg).padding().foregroundColor(.white).background(Color.green)
+                                    .clipShape(ChatBubble(mymsg: false))
+                                Spacer()
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            HStack{
+                TextField("Enter message", text: self.$txt)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                Button(action: {
+                    // Send todo actions
+                }){
+                    Text("Send ")
+                }
+            }
+            .navigationBarTitle(Text("\(name)"), displayMode: .inline)
+            //            .navigationBarItems(leading:
+            //                                    Button(action: {
+            //
+            //                                    }){
+            //                                        Image(systemName: "arrow.left").resizable().frame(width: 25, height: 25)
+            //                                    }
+            //            )
+        }.padding()
+        .onAppear{
+            self.getMsgs()
         }
+    }
+    
+    func getMsgs(){
+        let db = Firestore.firestore()
+        let uid = Auth.auth().currentUser?.uid
+        db.collection("msgs").document(uid!).collection(self.uid).order(by: "date", descending: false).getDocuments{
+            (snap, err) in
+            if err != nil {
+                print((err?.localizedDescription)!)
+                self.nomsgs = true
+                return
+            }
+            
+            if snap!.isEmpty {
+                self.nomsgs = true
+            }
+            
+            for i in snap!.documents{
+                let id = i.documentID
+                let msg = i.get("msg") as! String
+                let user = i.get("user") as! String
+                self.msgs.append(Msg(id: id, msg: msg, user: user))
+            }
+        }
+    }
+}
+
+struct Msg : Identifiable {
+    var id : String
+    var msg: String
+    var user: String
+}
+
+struct ChatBubble : Shape {
+    var mymsg: Bool
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: [.topLeft,.topRight,mymsg ? .bottomLeft : .bottomRight], cornerRadii: CGSize(width: 16, height: 16))
+        return Path(path.cgPath)
     }
 }
